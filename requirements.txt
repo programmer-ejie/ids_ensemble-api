@@ -3,3 +3,4 @@ gunicorn
 joblib
 numpy
 scikit-learn
+requests
