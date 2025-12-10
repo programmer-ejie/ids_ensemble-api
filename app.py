@@ -1,6 +1,7 @@
 import os
 import joblib
 import numpy as np
+import pandas as pd
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -16,10 +17,10 @@ print("Initializing IDS Ensemble API...")
 print(f"Loading model bundle from {BUNDLE_PATH} ...")
 bundle = joblib.load(BUNDLE_PATH)
 
-model_bin = bundle["bin"]           # Stage A (binary classifier)
-model_mul = bundle["mul"]           # Stage B (multi-class classifier)
-feature_names = bundle["features"]  # List of feature names expected
-best_thr = bundle["best_threshold"] # Tuned threshold
+model_bin = bundle["bin"]            # Stage A (binary classifier)
+model_mul = bundle["mul"]            # Stage B (multi-class classifier)
+feature_names = bundle["features"]   # List of feature names expected
+best_thr = bundle["best_threshold"]  # Tuned threshold
 
 print(f"Loaded bundle with {len(feature_names)} features.")
 print(f"Stage A threshold: {best_thr:.3f}")
@@ -34,7 +35,7 @@ def home():
 def analyze():
     data = request.get_json(force=True) or {}
 
-    # Build feature vector in the correct order
+    # 1) Build feature vector in the correct order expected by the model
     x_list = []
     for fname in feature_names:
         val = data.get(fname, 0.0)
@@ -44,19 +45,20 @@ def analyze():
             val = 0.0
         x_list.append(val)
 
-    x = np.array(x_list, dtype=float).reshape(1, -1)
+    # 2) Use a DataFrame so ColumnTransformer sees the correct column names
+    row_df = pd.DataFrame([x_list], columns=feature_names)
 
-    # Stage A: benign vs attack
-    proba_attack = model_bin.predict_proba(x)[0, 1]
+    # 3) Stage A: benign vs attack (probability)
+    proba_attack = model_bin.predict_proba(row_df)[0, 1]
     is_attack = int(proba_attack >= best_thr)
 
     risk_level = "benign"
     attack_type = None
 
+    # 4) Stage B: attack type prediction (only if Stage A says "attack")
     if is_attack == 1:
         risk_level = "attack"
-        # Stage B: attack type prediction
-        attack_type = model_mul.predict(x)[0]
+        attack_type = model_mul.predict(row_df)[0]
 
     return jsonify({
         "risk_level": risk_level,
