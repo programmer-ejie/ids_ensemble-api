@@ -7,23 +7,14 @@ import requests
 app = Flask(__name__)
 
 # ================== CONFIG ==================
-
-
 MODEL_DIR = "model"
 BUNDLE_FILENAME = "ids_ensemble.joblib"
 BUNDLE_PATH = os.path.join(MODEL_DIR, BUNDLE_FILENAME)
-
-# 👉 Put your actual Google Drive FILE ID here
-# Example share link:
-#   https://drive.google.com/file/d/1AbCDefGhIjKlMnOpQRsTuVWxyz12345/view?usp=sharing
-# FILE ID = 1AbCDefGhIjKlMnOpQRsTuVWxyz12345
-GDRIVE_FILE_ID = "PUT_YOUR_FILE_ID_HERE"
-
+GDRIVE_FILE_ID = "1aytzw8S6L4gkXUc5zHBpavp9JgvOHGrr"
 # ============================================
 
 def download_model_if_needed():
-    """Download the model from Google Drive if it's not already present."""
-    # Ensure directory exists
+  
     os.makedirs(MODEL_DIR, exist_ok=True)
 
     if os.path.exists(BUNDLE_PATH):
