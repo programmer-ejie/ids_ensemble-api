@@ -1,20 +1,20 @@
-from flask import Flask, request, jsonify
+import os
+import requests
 import joblib
 import numpy as np
-import os
-import requests 
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-# ================== CONFIG ==================
 MODEL_DIR = "model"
 BUNDLE_FILENAME = "ids_ensemble.joblib"
 BUNDLE_PATH = os.path.join(MODEL_DIR, BUNDLE_FILENAME)
+
+# 👉 Your actual Google Drive file ID
 GDRIVE_FILE_ID = "1aytzw8S6L4gkXUc5zHBpavp9JgvOHGrr"
-# ============================================
+
 
 def download_model_if_needed():
-  
     os.makedirs(MODEL_DIR, exist_ok=True)
 
     if os.path.exists(BUNDLE_PATH):
@@ -22,32 +22,66 @@ def download_model_if_needed():
         return
 
     print(f"[MODEL] {BUNDLE_PATH} not found. Downloading from Google Drive...")
-    url = f"https://drive.google.com/uc?export=download&id={GDRIVE_FILE_ID}"
 
-    try:
-        with requests.get(url, stream=True) as r:
-            r.raise_for_status()
-            with open(BUNDLE_PATH, "wb") as f:
-                for chunk in r.iter_content(chunk_size=1024 * 1024):
-                    if chunk:
-                        f.write(chunk)
-        print(f"[MODEL] Download complete: {BUNDLE_PATH}")
-    except Exception as e:
-        print(f"[MODEL] ERROR while downloading model: {e}")
-        raise
+    session = requests.Session()
+    base_url = "https://drive.google.com/uc?export=download"
+
+    # 1) First request
+    response = session.get(base_url, params={"id": GDRIVE_FILE_ID}, stream=True)
+    if response.status_code != 200:
+        print("[MODEL] First request status:", response.status_code)
+        raise RuntimeError("Failed initial download request to Google Drive")
+
+    # 2) Check if Google added a confirm token (for large files)
+    def _get_confirm_token(resp):
+        for key, value in resp.cookies.items():
+            if key.startswith("download_warning"):
+                return value
+        return None
+
+    token = _get_confirm_token(response)
+
+    if token:
+        print("[MODEL] Got Google Drive confirm token, requesting again...")
+        response = session.get(
+            base_url,
+            params={"id": GDRIVE_FILE_ID, "confirm": token},
+            stream=True
+        )
+        if response.status_code != 200:
+            print("[MODEL] Confirmed request status:", response.status_code)
+            raise RuntimeError("Failed confirmed download request to Google Drive")
+
+    # 3) Save to disk
+    with open(BUNDLE_PATH, "wb") as f:
+        for chunk in response.iter_content(1024 * 1024):
+            if chunk:
+                f.write(chunk)
+
+    print(f"[MODEL] Download complete: {BUNDLE_PATH}")
+
+    # 4) Sanity check: make sure it's not an HTML error page
+    size = os.path.getsize(BUNDLE_PATH)
+    print(f"[MODEL] Downloaded file size: {size} bytes")
+
+    with open(BUNDLE_PATH, "rb") as f:
+        head = f.read(200)
+
+    if head.startswith(b"<!DOCTYPE html") or head.startswith(b"<html"):
+        raise RuntimeError(
+            "Downloaded file looks like HTML, not a model. "
+            "Check FILE ID and sharing permissions (must be 'Anyone with the link')."
+        )
 
 
 print("Initializing IDS Ensemble API...")
-
-
 download_model_if_needed()
-
 
 print(f"Loading model bundle from {BUNDLE_PATH} ...")
 bundle = joblib.load(BUNDLE_PATH)
 
-model_bin = bundle["bin"]        
-model_mul = bundle["mul"]        
+model_bin = bundle["bin"]
+model_mul = bundle["mul"]
 feature_names = bundle["features"]
 best_thr = bundle["best_threshold"]
 
@@ -95,5 +129,4 @@ def analyze():
 
 
 if __name__ == "__main__":
-  
     app.run(host="0.0.0.0", port=5000, debug=True)

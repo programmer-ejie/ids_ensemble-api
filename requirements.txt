@@ -4,4 +4,3 @@ joblib
 numpy
 scikit-learn
 requests
-xgboost
