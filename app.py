@@ -17,7 +17,7 @@ bundle = joblib.load(BUNDLE_PATH)
 model_bin = bundle["bin"]
 model_mul = bundle["mul"]
 
-# ✅ Normalize expected feature names
+# Normalize expected feature names
 feature_names = [f.strip() for f in bundle["features"]]
 best_thr = float(bundle["best_threshold"])
 
@@ -59,17 +59,51 @@ def forward_to_laravel(record: dict):
 def home():
     return "IDS Ensemble API is running."
 
+# ✅ NEW: expose expected feature list (so your sender can match exactly)
+@app.route("/api/features", methods=["GET"])
+def features():
+    return jsonify({
+        "count": len(feature_names),
+        "features": feature_names
+    })
+
 @app.route("/api/analyze", methods=["POST"])
 def analyze():
     data = request.get_json(force=True) or {}
 
-    # ✅ Normalize incoming keys too
+    # Normalize incoming keys
     data = {str(k).strip(): v for k, v in data.items()}
 
-    # ✅ Debug counters: do we actually have the expected features?
+    # ✅ NEW: accept sender snake_case keys and map them into CIC-style keys (if model uses those)
+    aliases = {
+        "flow_duration": "Flow Duration",
+        "flow_pkts_s": "Flow Packets/s",
+        "flow_bytes_s": "Flow Bytes/s",
+        "tot_fwd_pkts": "Total Fwd Packets",
+        "tot_bwd_pkts": "Total Backward Packets",
+        "tot_fwd_bytes": "Total Length of Fwd Packets",
+        "tot_bwd_bytes": "Total Length of Bwd Packets",
+        "fwd_pkt_len_mean": "Fwd Packet Length Mean",
+        "bwd_pkt_len_mean": "Bwd Packet Length Mean",
+        "fwd_iat_mean": "Fwd IAT Mean",
+        "bwd_iat_mean": "Bwd IAT Mean",
+    }
+    for src_key, dst_key in aliases.items():
+        if src_key in data and dst_key not in data:
+            data[dst_key] = data[src_key]
+
+    # Debug counters
     present = sum(1 for f in feature_names if f in data)
     missing = len(feature_names) - present
 
+    # Optional server-side debug in Render logs (comment out later)
+    if missing > 0:
+        missing_names = [f for f in feature_names if f not in data]
+        print("MISSING SAMPLE:", missing_names[:15])
+        present_names = [f for f in feature_names if f in data]
+        print("PRESENT SAMPLE:", present_names[:15])
+
+    # Build model input in exact order
     x_list = []
     for fname in feature_names:
         val = data.get(fname, 0.0)
@@ -108,6 +142,7 @@ def analyze():
         "present_expected_features": present,
         "missing_expected_features": missing,
         "received_features_count": len(data.keys()),
+        "api_version": "debug-v3"
     })
 
 if __name__ == "__main__":
