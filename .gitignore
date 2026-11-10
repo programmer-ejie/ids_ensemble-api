@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+logs/
+.ipynb_checkpoints/
+# Keep the selected runtime model; retain research candidates locally.
+model/candidates/
+model/model.joblib

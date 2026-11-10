@@ -1,0 +1,718 @@
+{
+  "model_path": "C:\\Users\\perso\\EJIE\\Herd\\Intrusion-Detection-Monitoring-System\\ids_ensemble-api\\model\\candidates\\stage_b_experiments_20261110T154439510915Z\\cicids78_hist_gradient_boosting.joblib",
+  "model_sha256": "73893343b1d6f8b84b86dba6dc66e61f5a456d1472aa10859310aa04ff9e982e",
+  "fixtures_sha256": "ca0f396da581bc8af946af2bef5508e266735dd40a02f21211c61dfa0c79693f",
+  "threshold": 0.11320562204672165,
+  "feature_count": 78,
+  "total_samples": 70,
+  "total_benign": 0,
+  "total_correct_type": 65,
+  "caveat": "Current selected demonstration fixtures only; not independent accuracy or deployed Render predictions.",
+  "summary": [
+    {
+      "attack": "Bot",
+      "samples": 5,
+      "correct_type": 5,
+      "benign": 0,
+      "different_attack": 0,
+      "predictions": {
+        "BOT": 5
+      }
+    },
+    {
+      "attack": "DDoS",
+      "samples": 5,
+      "correct_type": 5,
+      "benign": 0,
+      "different_attack": 0,
+      "predictions": {
+        "DDOS": 5
+      }
+    },
+    {
+      "attack": "DoS GoldenEye",
+      "samples": 5,
+      "correct_type": 5,
+      "benign": 0,
+      "different_attack": 0,
+      "predictions": {
+        "DOS GOLDENEYE": 5
+      }
+    },
+    {
+      "attack": "DoS Hulk",
+      "samples": 5,
+      "correct_type": 5,
+      "benign": 0,
+      "different_attack": 0,
+      "predictions": {
+        "DOS HULK": 5
+      }
+    },
+    {
+      "attack": "DoS Slowhttptest",
+      "samples": 5,
+      "correct_type": 5,
+      "benign": 0,
+      "different_attack": 0,
+      "predictions": {
+        "DOS SLOWHTTPTEST": 5
+      }
+    },
+    {
+      "attack": "DoS slowloris",
+      "samples": 5,
+      "correct_type": 5,
+      "benign": 0,
+      "different_attack": 0,
+      "predictions": {
+        "DOS SLOWLORIS": 5
+      }
+    },
+    {
+      "attack": "FTP-Patator",
+      "samples": 5,
+      "correct_type": 5,
+      "benign": 0,
+      "different_attack": 0,
+      "predictions": {
+        "FTP-PATATOR": 5
+      }
+    },
+    {
+      "attack": "Heartbleed",
+      "samples": 5,
+      "correct_type": 5,
+      "benign": 0,
+      "different_attack": 0,
+      "predictions": {
+        "HEARTBLEED": 5
+      }
+    },
+    {
+      "attack": "Infiltration",
+      "samples": 5,
+      "correct_type": 5,
+      "benign": 0,
+      "different_attack": 0,
+      "predictions": {
+        "INFILTRATION": 5
+      }
+    },
+    {
+      "attack": "PortScan",
+      "samples": 5,
+      "correct_type": 5,
+      "benign": 0,
+      "different_attack": 0,
+      "predictions": {
+        "PORTSCAN": 5
+      }
+    },
+    {
+      "attack": "SSH-Patator",
+      "samples": 5,
+      "correct_type": 5,
+      "benign": 0,
+      "different_attack": 0,
+      "predictions": {
+        "SSH-PATATOR": 5
+      }
+    },
+    {
+      "attack": "Web Attack - Brute Force",
+      "samples": 5,
+      "correct_type": 5,
+      "benign": 0,
+      "different_attack": 0,
+      "predictions": {
+        "WEB ATTACK - BRUTE FORCE": 5
+      }
+    },
+    {
+      "attack": "Web Attack - Sql Injection",
+      "samples": 5,
+      "correct_type": 3,
+      "benign": 0,
+      "different_attack": 2,
+      "predictions": {
+        "WEB ATTACK - BRUTE FORCE": 1,
+        "DOS HULK": 1,
+        "WEB ATTACK - SQL INJECTION": 3
+      }
+    },
+    {
+      "attack": "Web Attack - XSS",
+      "samples": 5,
+      "correct_type": 2,
+      "benign": 0,
+      "different_attack": 3,
+      "predictions": {
+        "WEB ATTACK - BRUTE FORCE": 3,
+        "WEB ATTACK - XSS": 2
+      }
+    }
+  ],
+  "samples": [
+    {
+      "selected_attack": "Bot",
+      "sample": 1,
+      "risk_level": "attack",
+      "attack_probability": 0.5101496401290925,
+      "predicted_label": "BOT",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Bot",
+      "sample": 2,
+      "risk_level": "attack",
+      "attack_probability": 0.9747966902255218,
+      "predicted_label": "BOT",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Bot",
+      "sample": 3,
+      "risk_level": "attack",
+      "attack_probability": 0.9570472485940891,
+      "predicted_label": "BOT",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Bot",
+      "sample": 4,
+      "risk_level": "attack",
+      "attack_probability": 0.9338131002634474,
+      "predicted_label": "BOT",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Bot",
+      "sample": 5,
+      "risk_level": "attack",
+      "attack_probability": 0.9797183566149278,
+      "predicted_label": "BOT",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DDoS",
+      "sample": 1,
+      "risk_level": "attack",
+      "attack_probability": 0.9999878931819698,
+      "predicted_label": "DDOS",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DDoS",
+      "sample": 2,
+      "risk_level": "attack",
+      "attack_probability": 0.9999557077413554,
+      "predicted_label": "DDOS",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DDoS",
+      "sample": 3,
+      "risk_level": "attack",
+      "attack_probability": 0.9999849808128551,
+      "predicted_label": "DDOS",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DDoS",
+      "sample": 4,
+      "risk_level": "attack",
+      "attack_probability": 0.9998775405549326,
+      "predicted_label": "DDOS",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DDoS",
+      "sample": 5,
+      "risk_level": "attack",
+      "attack_probability": 0.9999833120258675,
+      "predicted_label": "DDOS",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DoS GoldenEye",
+      "sample": 1,
+      "risk_level": "attack",
+      "attack_probability": 0.9999806374708251,
+      "predicted_label": "DOS GOLDENEYE",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DoS GoldenEye",
+      "sample": 2,
+      "risk_level": "attack",
+      "attack_probability": 0.9999819887007602,
+      "predicted_label": "DOS GOLDENEYE",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DoS GoldenEye",
+      "sample": 3,
+      "risk_level": "attack",
+      "attack_probability": 0.9999786536606305,
+      "predicted_label": "DOS GOLDENEYE",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DoS GoldenEye",
+      "sample": 4,
+      "risk_level": "attack",
+      "attack_probability": 0.9999806374708251,
+      "predicted_label": "DOS GOLDENEYE",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DoS GoldenEye",
+      "sample": 5,
+      "risk_level": "attack",
+      "attack_probability": 0.9999825994920997,
+      "predicted_label": "DOS GOLDENEYE",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DoS Hulk",
+      "sample": 1,
+      "risk_level": "attack",
+      "attack_probability": 0.9999935253012826,
+      "predicted_label": "DOS HULK",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DoS Hulk",
+      "sample": 2,
+      "risk_level": "attack",
+      "attack_probability": 0.999992582867161,
+      "predicted_label": "DOS HULK",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DoS Hulk",
+      "sample": 3,
+      "risk_level": "attack",
+      "attack_probability": 0.9999890957323286,
+      "predicted_label": "DOS HULK",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DoS Hulk",
+      "sample": 4,
+      "risk_level": "attack",
+      "attack_probability": 0.9999919412545958,
+      "predicted_label": "DOS HULK",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DoS Hulk",
+      "sample": 5,
+      "risk_level": "attack",
+      "attack_probability": 0.9999833123527176,
+      "predicted_label": "DOS HULK",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DoS Slowhttptest",
+      "sample": 1,
+      "risk_level": "attack",
+      "attack_probability": 0.9978348052013684,
+      "predicted_label": "DOS SLOWHTTPTEST",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DoS Slowhttptest",
+      "sample": 2,
+      "risk_level": "attack",
+      "attack_probability": 0.9978348052013684,
+      "predicted_label": "DOS SLOWHTTPTEST",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DoS Slowhttptest",
+      "sample": 3,
+      "risk_level": "attack",
+      "attack_probability": 0.9987043243291753,
+      "predicted_label": "DOS SLOWHTTPTEST",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DoS Slowhttptest",
+      "sample": 4,
+      "risk_level": "attack",
+      "attack_probability": 0.997060952008042,
+      "predicted_label": "DOS SLOWHTTPTEST",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DoS Slowhttptest",
+      "sample": 5,
+      "risk_level": "attack",
+      "attack_probability": 0.997060952008042,
+      "predicted_label": "DOS SLOWHTTPTEST",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DoS slowloris",
+      "sample": 1,
+      "risk_level": "attack",
+      "attack_probability": 0.9998360679000499,
+      "predicted_label": "DOS SLOWLORIS",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DoS slowloris",
+      "sample": 2,
+      "risk_level": "attack",
+      "attack_probability": 0.9996524725069077,
+      "predicted_label": "DOS SLOWLORIS",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DoS slowloris",
+      "sample": 3,
+      "risk_level": "attack",
+      "attack_probability": 0.9998732760658486,
+      "predicted_label": "DOS SLOWLORIS",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DoS slowloris",
+      "sample": 4,
+      "risk_level": "attack",
+      "attack_probability": 0.9985489435405508,
+      "predicted_label": "DOS SLOWLORIS",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "DoS slowloris",
+      "sample": 5,
+      "risk_level": "attack",
+      "attack_probability": 0.9998800654020478,
+      "predicted_label": "DOS SLOWLORIS",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "FTP-Patator",
+      "sample": 1,
+      "risk_level": "attack",
+      "attack_probability": 0.999806610743534,
+      "predicted_label": "FTP-PATATOR",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "FTP-Patator",
+      "sample": 2,
+      "risk_level": "attack",
+      "attack_probability": 0.9998426974667232,
+      "predicted_label": "FTP-PATATOR",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "FTP-Patator",
+      "sample": 3,
+      "risk_level": "attack",
+      "attack_probability": 0.9982688670459716,
+      "predicted_label": "FTP-PATATOR",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "FTP-Patator",
+      "sample": 4,
+      "risk_level": "attack",
+      "attack_probability": 0.9998144946122902,
+      "predicted_label": "FTP-PATATOR",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "FTP-Patator",
+      "sample": 5,
+      "risk_level": "attack",
+      "attack_probability": 0.9955297451446213,
+      "predicted_label": "FTP-PATATOR",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Heartbleed",
+      "sample": 1,
+      "risk_level": "attack",
+      "attack_probability": 0.9422172260101571,
+      "predicted_label": "HEARTBLEED",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Heartbleed",
+      "sample": 2,
+      "risk_level": "attack",
+      "attack_probability": 0.9934422310222463,
+      "predicted_label": "HEARTBLEED",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Heartbleed",
+      "sample": 3,
+      "risk_level": "attack",
+      "attack_probability": 0.9841358229527589,
+      "predicted_label": "HEARTBLEED",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Heartbleed",
+      "sample": 4,
+      "risk_level": "attack",
+      "attack_probability": 0.9934422310222463,
+      "predicted_label": "HEARTBLEED",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Heartbleed",
+      "sample": 5,
+      "risk_level": "attack",
+      "attack_probability": 0.9864823971201897,
+      "predicted_label": "HEARTBLEED",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Infiltration",
+      "sample": 1,
+      "risk_level": "attack",
+      "attack_probability": 0.6897624717812664,
+      "predicted_label": "INFILTRATION",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Infiltration",
+      "sample": 2,
+      "risk_level": "attack",
+      "attack_probability": 0.2644235682785623,
+      "predicted_label": "INFILTRATION",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Infiltration",
+      "sample": 3,
+      "risk_level": "attack",
+      "attack_probability": 0.7943370113449385,
+      "predicted_label": "INFILTRATION",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Infiltration",
+      "sample": 4,
+      "risk_level": "attack",
+      "attack_probability": 0.7325518216641328,
+      "predicted_label": "INFILTRATION",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Infiltration",
+      "sample": 5,
+      "risk_level": "attack",
+      "attack_probability": 0.8138183860944364,
+      "predicted_label": "INFILTRATION",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "PortScan",
+      "sample": 1,
+      "risk_level": "attack",
+      "attack_probability": 0.9986849293625464,
+      "predicted_label": "PORTSCAN",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "PortScan",
+      "sample": 2,
+      "risk_level": "attack",
+      "attack_probability": 0.9999273935131419,
+      "predicted_label": "PORTSCAN",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "PortScan",
+      "sample": 3,
+      "risk_level": "attack",
+      "attack_probability": 0.9965588236742209,
+      "predicted_label": "PORTSCAN",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "PortScan",
+      "sample": 4,
+      "risk_level": "attack",
+      "attack_probability": 0.9999216245651029,
+      "predicted_label": "PORTSCAN",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "PortScan",
+      "sample": 5,
+      "risk_level": "attack",
+      "attack_probability": 0.9981949169448323,
+      "predicted_label": "PORTSCAN",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "SSH-Patator",
+      "sample": 1,
+      "risk_level": "attack",
+      "attack_probability": 0.9998510098189821,
+      "predicted_label": "SSH-PATATOR",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "SSH-Patator",
+      "sample": 2,
+      "risk_level": "attack",
+      "attack_probability": 0.9426436929476503,
+      "predicted_label": "SSH-PATATOR",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "SSH-Patator",
+      "sample": 3,
+      "risk_level": "attack",
+      "attack_probability": 0.9487999919936749,
+      "predicted_label": "SSH-PATATOR",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "SSH-Patator",
+      "sample": 4,
+      "risk_level": "attack",
+      "attack_probability": 0.9999020743625429,
+      "predicted_label": "SSH-PATATOR",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "SSH-Patator",
+      "sample": 5,
+      "risk_level": "attack",
+      "attack_probability": 0.9998673756976788,
+      "predicted_label": "SSH-PATATOR",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Web Attack - Brute Force",
+      "sample": 1,
+      "risk_level": "attack",
+      "attack_probability": 0.9989920660877817,
+      "predicted_label": "WEB ATTACK - BRUTE FORCE",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Web Attack - Brute Force",
+      "sample": 2,
+      "risk_level": "attack",
+      "attack_probability": 0.8678870998968031,
+      "predicted_label": "WEB ATTACK - BRUTE FORCE",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Web Attack - Brute Force",
+      "sample": 3,
+      "risk_level": "attack",
+      "attack_probability": 0.9989920660877817,
+      "predicted_label": "WEB ATTACK - BRUTE FORCE",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Web Attack - Brute Force",
+      "sample": 4,
+      "risk_level": "attack",
+      "attack_probability": 0.9943776346399388,
+      "predicted_label": "WEB ATTACK - BRUTE FORCE",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Web Attack - Brute Force",
+      "sample": 5,
+      "risk_level": "attack",
+      "attack_probability": 0.7184878186566264,
+      "predicted_label": "WEB ATTACK - BRUTE FORCE",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Web Attack - Sql Injection",
+      "sample": 1,
+      "risk_level": "attack",
+      "attack_probability": 0.7860138513929099,
+      "predicted_label": "WEB ATTACK - BRUTE FORCE",
+      "matches_selected_attack": false
+    },
+    {
+      "selected_attack": "Web Attack - Sql Injection",
+      "sample": 2,
+      "risk_level": "attack",
+      "attack_probability": 0.9698488548506826,
+      "predicted_label": "DOS HULK",
+      "matches_selected_attack": false
+    },
+    {
+      "selected_attack": "Web Attack - Sql Injection",
+      "sample": 3,
+      "risk_level": "attack",
+      "attack_probability": 0.650108269882457,
+      "predicted_label": "WEB ATTACK - SQL INJECTION",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Web Attack - Sql Injection",
+      "sample": 4,
+      "risk_level": "attack",
+      "attack_probability": 0.8565379612723015,
+      "predicted_label": "WEB ATTACK - SQL INJECTION",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Web Attack - Sql Injection",
+      "sample": 5,
+      "risk_level": "attack",
+      "attack_probability": 0.8132480640075185,
+      "predicted_label": "WEB ATTACK - SQL INJECTION",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Web Attack - XSS",
+      "sample": 1,
+      "risk_level": "attack",
+      "attack_probability": 0.9987441724002235,
+      "predicted_label": "WEB ATTACK - BRUTE FORCE",
+      "matches_selected_attack": false
+    },
+    {
+      "selected_attack": "Web Attack - XSS",
+      "sample": 2,
+      "risk_level": "attack",
+      "attack_probability": 0.9989920660877817,
+      "predicted_label": "WEB ATTACK - BRUTE FORCE",
+      "matches_selected_attack": false
+    },
+    {
+      "selected_attack": "Web Attack - XSS",
+      "sample": 3,
+      "risk_level": "attack",
+      "attack_probability": 0.9989920660877817,
+      "predicted_label": "WEB ATTACK - XSS",
+      "matches_selected_attack": true
+    },
+    {
+      "selected_attack": "Web Attack - XSS",
+      "sample": 4,
+      "risk_level": "attack",
+      "attack_probability": 0.9989920660877817,
+      "predicted_label": "WEB ATTACK - BRUTE FORCE",
+      "matches_selected_attack": false
+    },
+    {
+      "selected_attack": "Web Attack - XSS",
+      "sample": 5,
+      "risk_level": "attack",
+      "attack_probability": 0.9989920660877817,
+      "predicted_label": "WEB ATTACK - XSS",
+      "matches_selected_attack": true
+    }
+  ]
+}

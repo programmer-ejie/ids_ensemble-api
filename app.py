@@ -1,4 +1,4 @@
-import os, json, time, math
+import os, json, time, math, hashlib
 import joblib
 import pandas as pd
 import requests
@@ -6,13 +6,15 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-MODEL_DIR = "model"
-BUNDLE_FILENAME = "ids_ensemble.joblib"
+MODEL_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "model")
+BUNDLE_FILENAME = os.getenv("IDS_MODEL_FILENAME", "cicids78_demo.joblib").strip()
 BUNDLE_PATH = os.path.join(MODEL_DIR, BUNDLE_FILENAME)
 
 print("Initializing IDS Ensemble API...")
 print(f"Loading model bundle from {BUNDLE_PATH} ...")
 bundle = joblib.load(BUNDLE_PATH)
+with open(BUNDLE_PATH, "rb") as model_file:
+    model_sha256 = hashlib.sha256(model_file.read()).hexdigest()
 
 model_bin = bundle["bin"]
 model_mul = bundle["mul"]
@@ -20,6 +22,20 @@ model_mul = bundle["mul"]
 # Normalize expected feature names
 feature_names = [f.strip() for f in bundle["features"]]
 best_thr = float(bundle["best_threshold"])
+if not 0 <= best_thr <= 1:
+    raise ValueError("Model threshold must be between zero and one")
+attack_column = list(model_bin.classes_).index(1)
+if model_bin.named_steps["pre"] is model_mul.named_steps["pre"]:
+    raise ValueError("Stage A and Stage B must have independent preprocessors")
+
+def model_metadata():
+    return {
+        "model_filename": BUNDLE_FILENAME,
+        "model_sha256": model_sha256,
+        "schema_version": bundle.get("schema_version", "unknown"),
+        "used_threshold": best_thr,
+        "deployment_profile": "experimental-demo",
+    }
 
 print(f"Loaded bundle with {len(feature_names)} features.")
 print(f"Stage A threshold: {best_thr:.3f}")
@@ -64,29 +80,29 @@ def home():
 def features():
     return jsonify({
         "count": len(feature_names),
-        "features": feature_names
+        "features": feature_names,
+        **model_metadata(),
     })
 
 @app.route("/api/analyze", methods=["POST"])
 def analyze():
-    data = request.get_json(force=True) or {}
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        return jsonify({"error": "invalid_json_object"}), 400
 
     # Normalize incoming keys
     data = {str(k).strip(): v for k, v in data.items()}
 
     # ✅ NEW: accept sender snake_case keys and map them into CIC-style keys (if model uses those)
     aliases = {
-        "flow_duration": "Flow Duration",
-        "flow_pkts_s": "Flow Packets/s",
-        "flow_bytes_s": "Flow Bytes/s",
-        "tot_fwd_pkts": "Total Fwd Packets",
-        "tot_bwd_pkts": "Total Backward Packets",
-        "tot_fwd_bytes": "Total Length of Fwd Packets",
-        "tot_bwd_bytes": "Total Length of Bwd Packets",
-        "fwd_pkt_len_mean": "Fwd Packet Length Mean",
-        "bwd_pkt_len_mean": "Bwd Packet Length Mean",
-        "fwd_iat_mean": "Fwd IAT Mean",
-        "bwd_iat_mean": "Bwd IAT Mean",
+        "dst_port": "destination_port",
+        "flow_pkts_s": "flow_packets_s",
+        "tot_fwd_pkts": "total_fwd_packets",
+        "tot_bwd_pkts": "total_backward_packets",
+        "tot_fwd_bytes": "total_length_of_fwd_packets",
+        "tot_bwd_bytes": "total_length_of_bwd_packets",
+        "fwd_pkt_len_mean": "fwd_packet_length_mean",
+        "bwd_pkt_len_mean": "bwd_packet_length_mean",
     }
     for src_key, dst_key in aliases.items():
         if src_key in data and dst_key not in data:
@@ -99,25 +115,25 @@ def analyze():
     # Optional server-side debug in Render logs (comment out later)
     if missing > 0:
         missing_names = [f for f in feature_names if f not in data]
-        print("MISSING SAMPLE:", missing_names[:15])
-        present_names = [f for f in feature_names if f in data]
-        print("PRESENT SAMPLE:", present_names[:15])
+        return jsonify({"error": "missing_model_features",
+                        "missing_expected_features": missing_names,
+                        **model_metadata()}), 422
 
     # Build model input in exact order
     x_list = []
     for fname in feature_names:
-        val = data.get(fname, 0.0)
+        val = data[fname]
         try:
             val = float(val)
-            if math.isnan(val) or math.isinf(val):
-                val = 0.0
-        except Exception:
-            val = 0.0
+            if not math.isfinite(val):
+                raise ValueError("Non-finite model feature")
+        except (ValueError, TypeError, OverflowError):
+            return jsonify({"error": "invalid_model_feature", "feature": fname}), 422
         x_list.append(val)
 
     row_df = pd.DataFrame([x_list], columns=feature_names)
 
-    proba_attack = float(model_bin.predict_proba(row_df)[0, 1])
+    proba_attack = float(model_bin.predict_proba(row_df)[0, attack_column])
     is_attack = int(proba_attack >= best_thr)
 
     risk_level = "benign"
@@ -142,8 +158,9 @@ def analyze():
         "present_expected_features": present,
         "missing_expected_features": missing,
         "received_features_count": len(data.keys()),
-        "api_version": "debug-v3"
+        "api_version": "demo-v4",
+        **model_metadata(),
     })
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5000")), debug=False)
